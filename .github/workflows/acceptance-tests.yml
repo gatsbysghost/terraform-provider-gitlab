@@ -42,9 +42,10 @@ jobs:
 
     - name: Set up Enterprise Edition License file
       run: |
+        openssl version
         mkdir license
         [[ -n "${{ secrets.ENCRYPT_PASSWORD }}" ]] && echo decrypt
-        [[ -n "${{ secrets.ENCRYPT_PASSWORD }}" ]] && openssl aes-256-cbc -d -in Gitlab-license.encrypted -out license/Gitlab-license.txt -pass "pass:${{ secrets.ENCRYPT_PASSWORD }}"
+        [[ -n "${{ secrets.ENCRYPT_PASSWORD }}" ]] && openssl enc -aes-256-cbc -d -in Gitlab-license.encrypted -out license/Gitlab-license.txt -pass "pass:${{ secrets.ENCRYPT_PASSWORD }}"
         chmod 666 license/Gitlab-license.txt || true
         echo "::set-env name=GITLAB_LICENSE_FILE::Gitlab-license.txt"
 
